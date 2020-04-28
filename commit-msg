@@ -1,0 +1,64 @@
+#!/bin/bash
+
+export TERM=xterm-256color 
+
+GIT_PROJECT_LOCATION=$(git rev-parse --show-toplevel)
+GIT_PROJECT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+GIT_PROJECT_LATEST_REVISION=$(git rev-list -n 1 HEAD)
+ESLINT_FILE_PATH=$GIT_PROJECT_LOCATION"/.eslintrc"
+
+echo ""
+echo "# Running commit-msg git hook"
+echo "# ------------------------------------------------------"
+echo "# Location:      $GIT_PROJECT_LOCATION"
+echo "# Branch:        $GIT_PROJECT_BRANCH"
+echo "# Last revision: $GIT_PROJECT_LATEST_REVISION"
+
+# assume success
+ALLOW_COMMIT=1
+
+# for every new file, copied and/or modified
+# whose extension matches .js
+# run eslint whitelistingg globals (require and export)
+
+LINTABLE=$(git diff --name-only --staged --diff-filter ARCM '*.js') 
+
+if [ -z "$LINTABLE" ]; then
+  echo "# No js modified files. Skip lint verification"
+  echo "# Proceeding to commit your changes"
+  echo "# Good Bye"
+  exit 0
+fi;
+
+echo ""
+echo "...please stand by eslint had started to verify staged changes..."
+echo ""
+
+for LINTME in $LINTABLE; 
+  do
+
+    LINTCMD=$(eslint --global require --global exports:true --quiet $LINTME 2>&1)
+    
+    if [ $? -ne 0 ]; then
+         echo "$LINTCMD" && ALLOW_COMMIT=0;
+    fi;
+
+done;
+
+echo ""
+
+if [ $ALLOW_COMMIT -eq 1 ]; then
+  echo "# Code looks OK"
+  echo "# Commiting now..."  
+  echo "# Bye"
+  exit  0
+fi;
+
+echo "# Sorry!"
+echo "# Your Commit Had Been Rejected"
+echo "# Code you are trying to commit did not pass code style verification"
+echo "# See $ESLINT_FILE_PATH for guidelines"
+echo "# Apply fix(es) and commit again"
+echo "# Good bye..."
+
+exit 1
