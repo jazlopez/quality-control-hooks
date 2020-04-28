@@ -7,15 +7,6 @@ In order to use this hook you want to copy ```commit-msg``` file to your reposit
 By doing so it will register a hook that automatically run verifications to staged files every time you want to commit them.
 
 If verification ends without error the commit will go thru normally. Otherwise it will abort until the code is modified to pass the verification.
-  
-```
-cp commit-msg /PATH/TO/YOUR/REPOSITORY/.git/hooks/commit-msg
-```
-
-> For the hook to work it requires an .eslintrc file. if you do not have an existing .eslintrc in your project see .estlintrc.json.dist example file. You need to rename it to .eslintrc.json and place it in your project at top level directory.
->  
-> ``cp .eslintrc.json.dist /PATH/TO/YOUR/REPOSITORY/.eslintrc.json``
->  
 
 #### 1. GET STARTED
 
@@ -42,15 +33,26 @@ Make sure your system has installed the following plugins and tools.
 ######  1.2.1 INSTALLATION
 
 ```
-npm install -g eslint@5.16.0 \ 
-  eslint-config-standard@12.0.0 \ 
-  eslint-plugin-import@2.17.3 \ 
-  eslint-plugin-node@9.1.0 \
-  eslint-plugin-promise@4.1.1 \
-  eslint-plugin-standard@4.0.0
+# Run install script 
+
+./install.sh
+
 ```
 
-#### 2. DISABLE HOOK
+#### 2. ENABLE HOOK
+
+Simply copy commit-msg file into any of your javascript based projects you want to eslint before proceed with commit.
+
+```
+# copy hook file to your desired project
+
+cp commit-msg /PATH/TO/YOUR/REPOSITORY/.git/hooks/commit-msg
+
+# copy eslint rules to your desired project
+cp .eslintrc.json.dist /PATH/TO/YOUR/REPOSITORY/.eslintrc.json
+```
+
+#### 3. DISABLE HOOK
 
 Simply rename or delete commit-msg file to make the hook to stop source code verification.
 
@@ -62,11 +64,12 @@ mv /PATH/TO/YOUR/REPOSITORY/.git/hooks/commit-msg /PATH/TO/YOUR/REPOSITORY/.git/
 rm /PATH/TO/YOUR/REPOSITORY/.git/hooks/commit-msg
 ```
 
-#### 3. VERSION
+#### 4. VERSION
 
 1.0.0    Initial
 1.0.1    fix staged .js file mask
 
-#### 4. CONTACT
+#### 5. CONTACT
 
 [TFC Nutrias](mailto:tfc_nutrias@thermofisher.com)
+[Jaziel Lopez](mailto:jaziel.lopez@thermofisher.com)
