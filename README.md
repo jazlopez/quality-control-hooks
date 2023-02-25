@@ -116,5 +116,4 @@ rm /PATH/TO/YOUR/REPOSITORY/.git/hooks/commit-msg
 
 #### 5. CONTACT
 
-[TFC Nutrias](mailto:tfc_nutrias@thermofisher.com)
 [Jaziel Lopez](mailto:jaziel.lopez@thermofisher.com)
